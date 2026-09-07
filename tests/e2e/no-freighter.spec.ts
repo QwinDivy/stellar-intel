@@ -133,6 +133,13 @@ test.describe('[#106] Freighter not installed', () => {
       (await connectBtn.isVisible().catch(() => false));
 
     expect(showsGuidance).toBe(true);
+
+    // The handler above intercepts every Next.js chunk, and /offramp keeps
+    // pulling them after the assertions are done. Any route.fetch() still in
+    // flight when the test ends rejects with "route.fetch: Test ended.", which
+    // fails the whole run even though every test passed -- exactly how this
+    // suite went red on main while reporting 35 passed. Drop the routes first.
+    await page.unrouteAll({ behavior: 'ignoreErrors' });
   });
 
   // ── No crash ────────────────────────────────────────────────────────────────
