@@ -35,19 +35,21 @@ const eslintConfig = defineConfig([
             {
               group: ['**/estimatedRates', '**/estimatedRates.ts'],
               message:
-                'Estimated rates are banned (#005). Show source: "unavailable" with null fields instead. See lib/stellar/estimatedRates.ts for context.',
+                'Estimated rates are banned (#005). Show source: "unavailable" with null fields instead.',
             },
           ],
         },
       ],
     },
   },
-  // Test files: mocks legitimately use `any` and intentionally-unused fixtures.
+  // Test files: mocks legitimately use `any` and intentionally-unused fixtures,
+  // and harness setup logs timings to the console like the scripts/ tooling does.
   {
     files: ['tests/**', '**/*.{test,spec}.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+      'no-console': 'off',
     },
   },
   // Build/CI scripts run in Node and are dev tooling, not shipped code.
@@ -73,7 +75,7 @@ const eslintConfig = defineConfig([
     },
   },
   // Override default ignores of eslint-config-next.
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'packages/*/dist/**']),
 ]);
 
 export default eslintConfig;

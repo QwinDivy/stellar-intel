@@ -1,5 +1,7 @@
 # Non-Custody Manifesto
 
+**Last reviewed:** 2026-08-26
+
 Stellar Intel is **non-custodial by construction**. This is an architectural
 property, not a policy promise — the system has no code path that could take
 custody.
@@ -26,6 +28,12 @@ custody.
 There is no wallet we control in the value path, no held key, and no autonomous
 spend — including from the [MCP agent surface](MCP.md), where every executing call
 must be signed by the user's wallet.
+
+`tests/custody-boundary.spec.ts` gates this in CI: it fails if anything under
+`lib/` or `app/` ever constructs a Stellar signer from a raw secret, or if the
+client-facing env schema ever declares a variable that looks like one.
+`packages/publisher`'s own signing key (`PUBLISHER_SECRET`, below) is the one
+named exemption.
 
 ## What we do hold
 
